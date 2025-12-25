@@ -2,6 +2,8 @@ package com.geeks.shopapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
@@ -10,13 +12,22 @@ import com.geeks.shopapp.databinding.ItemProductBinding
 
 class ProductAdapter(
     private val onClick: (ProductDto) -> Unit
-) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+) : ListAdapter<ProductDto, ProductAdapter.ProductViewHolder>(ProductDiffUtilCallback()) {
 
-    private var items: List<ProductDto> = emptyList()
+    class ProductDiffUtilCallback: DiffUtil.ItemCallback<ProductDto>() {
+        override fun areItemsTheSame(
+            oldItem: ProductDto,
+            newItem: ProductDto
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    fun submitList(list: List<ProductDto>) {
-        items = list
-        notifyDataSetChanged()
+        override fun areContentsTheSame(
+            oldItem: ProductDto,
+            newItem: ProductDto
+        ): Boolean {
+            return oldItem == newItem
+        }
     }
 
     override fun onCreateViewHolder(
@@ -33,12 +44,9 @@ class ProductAdapter(
     }
 
 
-    override fun onBindViewHolder(holder: ProductAdapter.ProductViewHolder, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = items.size
-
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductDto) {
@@ -48,7 +56,7 @@ class ProductAdapter(
                 tvCategory.text = product.category
 
                 ivProduct.load(product.image) {
-                    crossfade(true)  //плавное появление
+                    crossfade(true)
                 }
                 root.setOnClickListener {
                     onClick(product)
