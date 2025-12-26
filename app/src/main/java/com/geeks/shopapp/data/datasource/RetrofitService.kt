@@ -1,4 +1,4 @@
-package com.geeks.shopapp.data.api
+package com.geeks.shopapp.data.datasource
 
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

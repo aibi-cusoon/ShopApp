@@ -65,6 +65,7 @@ dependencies {
 
 // 3. Koin (DI)
     implementation("io.insert-koin:koin-android:4.1.1")
+    implementation("io.insert-koin:koin-core:4.1.1")
 
 // 4. Coil (Картинки)
     implementation("io.coil-kt.coil3:coil:3.3.0")

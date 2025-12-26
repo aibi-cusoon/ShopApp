@@ -17,13 +17,14 @@ import com.geeks.shopapp.databinding.FragmentProductListBinding
 import com.geeks.shopapp.ui.adapters.ProductAdapter
 import com.geeks.shopapp.ui.models.UiState
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProductListFragment : Fragment() {
 
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ListViewModel by viewModels()
+    private val viewModel: ListViewModel by viewModel()
 
     private val adapter = ProductAdapter { product ->
         val action = ProductListFragmentDirections.Companion

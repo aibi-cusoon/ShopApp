@@ -13,16 +13,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import coil3.load
-import com.geeks.shopapp.data.model.ProductDto
 import com.geeks.shopapp.databinding.FragmentProductDetailBinding
+import com.geeks.shopapp.domain.models.Product
 import com.geeks.shopapp.ui.models.UiState
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProductDetailFragment : Fragment() {
     private var _binding: FragmentProductDetailBinding? = null
     private val binding get() = _binding!!
     private val args: ProductDetailFragmentArgs by navArgs()
-    private val viewModel: ProductDetailViewModel by viewModels()
+    private val viewModel: ProductDetailViewModel by viewModel()
 
 
 
@@ -42,7 +43,7 @@ class ProductDetailFragment : Fragment() {
         observeState()
 
     }
-    private fun bindProduct(product: ProductDto) {
+    private fun bindProduct(product: Product) {
         val rate = product.rating?.rate ?: 0.0
         val count = product.rating?.count ?: 0
 
