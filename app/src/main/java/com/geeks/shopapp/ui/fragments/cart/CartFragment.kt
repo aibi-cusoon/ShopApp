@@ -1,6 +1,7 @@
 package com.geeks.shopapp.ui.fragments.cart
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,10 +34,7 @@ class CartFragment : Fragment() {
 
         setupRecycler()
         observeData()
-
-        binding.btnCheckout.setOnClickListener{
-            viewModel.checkout()
-        }
+        checkout()
     }
 
     private fun setupRecycler() {
@@ -44,9 +42,16 @@ class CartFragment : Fragment() {
         binding.rvCart.adapter = adapter
     }
 
+    private fun checkout(){
+        binding.btnCheckout.setOnClickListener {
+            viewModel.checkout()
+        }
+    }
+
     private fun observeData(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.items.collect { items ->
+                Log.d("CartFragment", "Cart items: $items")
                 adapter.submitList(items)
                 binding.btnCheckout.isEnabled = items.isNotEmpty()
             }

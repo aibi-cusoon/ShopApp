@@ -13,6 +13,7 @@ val uiModule = module {
     ) }
     viewModel { ProductDetailViewModel(getProductByIdUseCase = get()) }
     viewModel { CartViewModel(getCartItemsUseCase = get(),
+        addToCartUseCase = get(),
         checkOutUseCase = get(),
         clearCartUseCase = get()) }
 }

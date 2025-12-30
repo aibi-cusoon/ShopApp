@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import coil3.load
 import com.geeks.shopapp.databinding.FragmentProductDetailBinding
 import com.geeks.shopapp.domain.models.Product
+import com.geeks.shopapp.ui.fragments.cart.CartViewModel
 import com.geeks.shopapp.ui.models.UiState
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +24,7 @@ class ProductDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: ProductDetailFragmentArgs by navArgs()
     private val viewModel: ProductDetailViewModel by viewModel()
+    private val cartViewModel: CartViewModel by viewModel()
 
 
     override fun onCreateView(
@@ -39,7 +41,19 @@ class ProductDetailFragment : Fragment() {
         val productId = args.productId
         viewModel.loadProductById(productId)
         observeState()
+        setupBuyButton()
+    }
 
+    private fun setupBuyButton() {
+        binding.btnBuy.setOnClickListener {
+            val state = viewModel.state.value
+            if (state is UiState.Success) {
+                lifecycleScope.launch {
+                    cartViewModel.addToCart(state.data)
+                    Toast.makeText(requireContext(), "Добавлено!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
     private fun bindProduct(product: Product) {
         val rate = product.rating?.rate ?: 0.0
