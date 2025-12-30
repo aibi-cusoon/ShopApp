@@ -25,7 +25,6 @@ class ProductDetailFragment : Fragment() {
     private val viewModel: ProductDetailViewModel by viewModel()
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
