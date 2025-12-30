@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -26,11 +25,20 @@ class ProductListFragment : Fragment() {
 
     private val viewModel: ListViewModel by viewModel()
 
-    private val adapter = ProductAdapter { product ->
-        val action = ProductListFragmentDirections.Companion
-            .actionProductListFragmentToProductDetailFragment(product.id)
-        findNavController().navigate(action)
-    }
+    private val productAdapter = ProductAdapter(
+        onClick = { product ->
+            val action =
+                ProductListFragmentDirections
+                    .actionProductListFragmentToProductDetailFragment(product.id)
+
+            findNavController().navigate(action)
+        },
+        onBuyClick = { product ->
+            viewModel.addToCart(product)
+            Toast.makeText(requireContext(), "Добавлено!", Toast.LENGTH_SHORT).show()
+        }
+    )
+
 
 
     override fun onCreateView(
@@ -50,7 +58,7 @@ class ProductListFragment : Fragment() {
 
     private fun setupRecycler() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = productAdapter
     }
 
     private fun observeState() {
@@ -66,13 +74,14 @@ class ProductListFragment : Fragment() {
                         is UiState.Success -> {
                             binding.progressBar.isVisible = false
                             binding.recyclerView.isVisible = true
-                            adapter.submitList(state.data)
+                            productAdapter.submitList(state.data)
                         }
 
                         is UiState.Error -> {
                             binding.progressBar.isVisible = false
                             binding.recyclerView.isVisible = false
-                            Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

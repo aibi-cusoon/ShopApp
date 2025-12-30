@@ -23,4 +23,9 @@
             android:name="productId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.geeks.shopapp.ui.fragments.cart.CartFragment"
+        android:label="Cart"/>
+
 </navigation>

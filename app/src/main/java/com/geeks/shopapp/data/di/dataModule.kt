@@ -1,8 +1,11 @@
 package com.geeks.shopapp.data.di
 
 import com.geeks.shopapp.data.datasource.StoreApi
+import com.geeks.shopapp.data.repository.CartRepositoryImpl
 import com.geeks.shopapp.data.repository.ProductRepositoryImpl
+import com.geeks.shopapp.domain.repository.CartRepository
 import com.geeks.shopapp.domain.repository.ProductRepository
+import com.geeks.shopapp.ui.fragments.cart.CartViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -45,5 +48,5 @@ val dataModule = module {
             .create(StoreApi::class.java)
     }
     single<ProductRepository> { ProductRepositoryImpl(api = get()) }
-
+    single<CartRepository> { CartRepositoryImpl(api = get()) }
 }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.2.21"
     id ("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
